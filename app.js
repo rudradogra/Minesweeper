@@ -1,10 +1,14 @@
+require("dotenv").config();
+
 const express = require("express");
-const mongoose = require("./db");
+const connectDB = require("./mongoose-connection");
 const cors = require("cors");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+connectDB(); 
 
 const gameRoutes = require("./routes/gameRoutes");
 const userRoutes = require("./routes/userRoutes");
