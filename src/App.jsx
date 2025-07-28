@@ -1,83 +1,131 @@
-import { useState, useEffect } from 'react';
-import Board from './components/Board';
-import Timer from './components/Timer';
-import ThemeToggle from './components/ThemeToggle';
+import React, { useState, useEffect } from 'react';
+import LandingPage from './components/LandingPage/LandingPage';
+import Game from './components/Game';
+import SignIn from './components/Auth/SignIn';
+import SignUp from './components/Auth/SignUp';
 import './App.css';
 
 function App() {
-  const [gameState, setGameState] = useState('idle'); // idle, playing, won, lost
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [currentPage, setCurrentPage] = useState('landing'); // landing, game, signin, signup
+  const [selectedMode, setSelectedMode] = useState('beginner');
+  const [user, setUser] = useState(null);
+  const [theme, setTheme] = useState('light');
 
-  // Handle first click to start the game
-  const handleFirstClick = () => {
-    setGameState('playing');
-  };
-
-  // Reset the game
-  const resetGame = () => {
-    setGameState('idle');
-  };
-
-  // Toggle theme
-  const toggleTheme = () => {
-    setIsDarkMode(prev => !prev);
-  };
-
-  // Apply theme to document
+  // Load theme from localStorage on mount
   useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.setAttribute('data-theme', 'dark');
-    } else {
-      document.documentElement.removeAttribute('data-theme');
-    }
-  }, [isDarkMode]);
+    const savedTheme = localStorage.getItem('minesweeper-theme') || 'light';
+    setTheme(savedTheme);
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  }, []);
 
-  const getGameMessage = () => {
-    switch (gameState) {
-      case 'won':
-        return '🎉 Congratulations! You won! 🎉';
-      case 'lost':
-        return '💥 Game Over! Better luck next time! 💥';
-      case 'playing':
-        return 'Good luck! Left click to reveal, right click to flag.';
+  // Load user from localStorage on mount
+  useEffect(() => {
+    const savedUser = localStorage.getItem('minesweeper-user');
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    }
+  }, []);
+
+  const handleSelectMode = (mode) => {
+    if (mode === 'custom') {
+      // For now, default to beginner for custom mode
+      // You could add a custom mode configuration dialog here
+      setSelectedMode('beginner');
+    } else {
+      setSelectedMode(mode);
+    }
+    setCurrentPage('game');
+  };
+
+  const handleSignIn = (userData) => {
+    setUser(userData);
+    localStorage.setItem('minesweeper-user', JSON.stringify(userData));
+    setCurrentPage('landing');
+  };
+
+  const handleSignUp = (userData) => {
+    setUser(userData);
+    localStorage.setItem('minesweeper-user', JSON.stringify(userData));
+    setCurrentPage('landing');
+  };
+
+  const handleSignOut = () => {
+    setUser(null);
+    localStorage.removeItem('minesweeper-user');
+  };
+
+  const handleBackToLanding = () => {
+    setCurrentPage('landing');
+  };
+
+  const handleGoToSignIn = () => {
+    setCurrentPage('signin');
+  };
+
+  const handleGoToSignUp = () => {
+    setCurrentPage('signup');
+  };
+
+  const handleSwitchToSignUp = () => {
+    setCurrentPage('signup');
+  };
+
+  const handleSwitchToSignIn = () => {
+    setCurrentPage('signin');
+  };
+
+  // Render current page
+  const renderCurrentPage = () => {
+    switch (currentPage) {
+      case 'landing':
+        return (
+          <LandingPage
+            onSelectMode={handleSelectMode}
+            onSignIn={handleGoToSignIn}
+            onSignUp={handleGoToSignUp}
+            user={user}
+            onSignOut={handleSignOut}
+          />
+        );
+      case 'game':
+        return (
+          <Game
+            mode={selectedMode}
+            onBackToLanding={handleBackToLanding}
+          />
+        );
+      case 'signin':
+        return (
+          <SignIn
+            onSignIn={handleSignIn}
+            onSwitchToSignUp={handleSwitchToSignUp}
+            onBackToLanding={handleBackToLanding}
+          />
+        );
+      case 'signup':
+        return (
+          <SignUp
+            onSignUp={handleSignUp}
+            onSwitchToSignIn={handleSwitchToSignIn}
+            onBackToLanding={handleBackToLanding}
+          />
+        );
       default:
-        return 'Click any cell to start playing!';
+        return (
+          <LandingPage
+            onSelectMode={handleSelectMode}
+            onSignIn={handleGoToSignIn}
+            onSignUp={handleGoToSignUp}
+            user={user}
+            onSignOut={handleSignOut}
+          />
+        );
     }
   };
 
   return (
-    <div className="app">
-      <ThemeToggle isDarkMode={isDarkMode} onToggle={toggleTheme} />
-      
-      <div className="game-container">
-        <h1 className="game-title">💣 Minesweeper 💣</h1>
-        
-        <Timer 
-          gameState={gameState} 
-          onReset={resetGame} 
-        />
-        
-        <div className="game-message">
-          {getGameMessage()}
-        </div>
-        
-        <Board 
-          gameState={gameState}
-          onGameStateChange={setGameState}
-          onFirstClick={handleFirstClick}
-        />
-        
-        <div className="instructions">
-          <h3>How to Play:</h3>
-          <ul>
-            <li>🖱️ <strong>Left click</strong> to reveal a cell</li>
-            <li>🖱️ <strong>Right click</strong> to flag/unflag a cell</li>
-            <li>💣 Avoid clicking on mines!</li>
-            <li>🔢 Numbers show how many mines are nearby</li>
-            <li>🏆 Reveal all non-mine cells to win!</li>
-          </ul>
-        </div>
-      </div>
+    <div className="App">
+      {renderCurrentPage()}
     </div>
   );
 }

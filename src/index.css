@@ -5,11 +5,61 @@
   box-sizing: border-box;
 }
 
+/* CSS Variables for theming */
+:root {
+  /* Light theme variables */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-tertiary: #e9ecef;
+  --text-primary: #212529;
+  --text-secondary: #6c757d;
+  --border-color: #dee2e6;
+  --cell-bg: #e9ecef;
+  --cell-hover: #dee2e6;
+  --cell-revealed: #ffffff;
+  --mine-color: #dc3545;
+  --flag-color: #fd7e14;
+  --number-1: #007bff;
+  --number-2: #28a745;
+  --number-3: #dc3545;
+  --number-4: #6f42c1;
+  --number-5: #fd7e14;
+  --number-6: #20c997;
+  --number-7: #000000;
+  --number-8: #6c757d;
+}
+
+/* Dark theme variables */
+[data-theme="dark"] {
+  --bg-primary: #212529;
+  --bg-secondary: #343a40;
+  --bg-tertiary: #495057;
+  --text-primary: #f8f9fa;
+  --text-secondary: #adb5bd;
+  --border-color: #495057;
+  --cell-bg: #495057;
+  --cell-hover: #6c757d;
+  --cell-revealed: #343a40;
+  --mine-color: #ff6b6b;
+  --flag-color: #ffa94d;
+  --number-1: #74c0fc;
+  --number-2: #69db7c;
+  --number-3: #ff6b6b;
+  --number-4: #da77f2;
+  --number-5: #ffa94d;
+  --number-6: #4ecdc4;
+  --number-7: #f8f9fa;
+  --number-8: #adb5bd;
+}
+
 body {
   margin: 0;
   font-family: 'Arial', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 button {

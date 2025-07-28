@@ -12,76 +12,8 @@ body {
   transition: all 0.3s ease;
 }
 
-.app {
-  min-height: 100vh;
-  background: var(--app-bg);
-  padding: 20px;
-  transition: background 0.3s ease;
-}
-
-.game-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.game-title {
-  font-size: 2.5rem;
-  margin-bottom: 20px;
+.App {
   text-align: center;
-  color: var(--title-color);
-  text-shadow: var(--title-shadow);
-  font-weight: bold;
-}
-
-.game-message {
-  background: var(--message-bg);
-  color: var(--message-text);
-  padding: 12px 20px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  font-weight: bold;
-  text-align: center;
-  border: 2px solid var(--border-color);
-  box-shadow: var(--shadow);
-  min-height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.instructions {
-  margin-top: 30px;
-  background: var(--instructions-bg);
-  padding: 20px;
-  border-radius: 8px;
-  border: 2px solid var(--border-color);
-  box-shadow: var(--shadow);
-  max-width: 400px;
-}
-
-.instructions h3 {
-  margin-bottom: 12px;
-  color: var(--instructions-title);
-  font-size: 1.2rem;
-}
-
-.instructions ul {
-  list-style: none;
-  padding: 0;
-}
-
-.instructions li {
-  margin-bottom: 8px;
-  color: var(--instructions-text);
-  line-height: 1.4;
-}
-
-.instructions strong {
-  color: var(--instructions-emphasis);
 }
 
 /* Light theme */

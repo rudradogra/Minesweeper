@@ -6,8 +6,7 @@ const Cell = ({
   isFlagged, 
   neighborMines, 
   onClick, 
-  onRightClick, 
-  gameState 
+  onRightClick
 }) => {
   const getCellContent = () => {
     if (isFlagged) {
@@ -36,9 +35,6 @@ const Cell = ({
       className += ' revealed';
       if (isMine) {
         className += ' mine';
-        if (gameState === 'lost') {
-          className += ' exploded';
-        }
       }
     } else {
       className += ' hidden';
@@ -60,7 +56,6 @@ const Cell = ({
       className={getCellClass()}
       onClick={onClick}
       onContextMenu={onRightClick}
-      disabled={gameState === 'won' || gameState === 'lost'}
     >
       {getCellContent()}
     </button>
