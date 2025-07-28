@@ -27,13 +27,7 @@ function App() {
   }, []);
 
   const handleSelectMode = (mode) => {
-    if (mode === 'custom') {
-      // For now, default to beginner for custom mode
-      // You could add a custom mode configuration dialog here
-      setSelectedMode('beginner');
-    } else {
-      setSelectedMode(mode);
-    }
+    setSelectedMode(mode);
     setCurrentPage('game');
   };
 

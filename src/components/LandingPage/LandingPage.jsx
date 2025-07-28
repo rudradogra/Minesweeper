@@ -29,15 +29,6 @@ const LandingPage = ({ onSelectMode, onSignIn, onSignUp, user, onSignOut }) => {
       difficulty: 'Hard',
       grid: '30×16',
       mines: 99
-    },
-    {
-      id: 'random',
-      name: 'Random',
-      description: 'Unpredictable challenge - mines unknown!',
-      icon: '🎲',
-      difficulty: 'Mystery',
-      grid: 'Random',
-      mines: '???'
     }
   ];
 
