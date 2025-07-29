@@ -1,5 +1,5 @@
-const Game = require("../models/Game");
-const User = require("../models/User");
+const Game = require("../models/game-model");
+const User = require("../models/user-model");
 
 // Start a game session
 exports.startGame = async (req, res) => {

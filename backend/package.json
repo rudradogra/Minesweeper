@@ -1,0 +1,25 @@
+{
+  "name": "minesweeper-backend",
+  "version": "1.0.0",
+  "description": "Backend API for Minesweeper game",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "mongoose": "^8.16.5",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "bcrypt": "^5.1.1",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  },
+  "keywords": ["minesweeper", "game", "api"],
+  "author": "",
+  "license": "ISC"
+}
