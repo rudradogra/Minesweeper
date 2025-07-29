@@ -1,51 +1,61 @@
 const express = require("express");
+const bcrypt = require("bcryptjs");
 const router = express.Router();
-const User = require("../models/user-model");
+const User = require("../models/User");
 
-// Sign Up
-router.post("/signup", async (req, res) => {
-  const { username } = req.body;
+// 🔹 Sign Up
+router.post("/SignUp", async (req, res) => {
+  const { username, email, password } = req.body;
 
-  if (!username) {
-    return res.status(400).json({ error: "Username is required" });
+  if (!username || !email || !password) {
+    return res.status(400).json({ error: "All fields are required" });
   }
 
   try {
-    // Check if username already exists
-    const existingUser = await User.findOne({ username });
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(409).json({ error: "Username already taken" });
+      return res.status(409).json({ error: "Email already in use" });
     }
+
+    // Hash password before saving
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = new User({
       username,
-      highScore: 0,
-      gamesPlayed: 0,
-      totalTimePlayed: 0,
+      email,
+      password: hashedPassword
     });
 
     await newUser.save();
-    res.status(201).json(newUser);
+
+    // Exclude password in response
+    const { password: _, ...userWithoutPassword } = newUser.toObject();
+    res.status(201).json(userWithoutPassword);
   } catch (err) {
     res.status(500).json({ error: "Signup failed", details: err.message });
   }
 });
 
-// Sign In
-router.post("/signin", async (req, res) => {
-  const { username } = req.body;
+// 🔹 Sign In
+router.post("/SignIn", async (req, res) => {
+  const { email, password } = req.body;
 
-  if (!username) {
-    return res.status(400).json({ error: "Username is required" });
+  if (!email || !password) {
+    return res.status(400).json({ error: "Email and Password are required" });
   }
 
   try {
-    const user = await User.findOne({ username });
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ error: "User not found" });
 
-    res.status(200).json(user);
+    // Compare hashed password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(401).json({ error: "Invalid credentials" });
+
+    // Exclude password in response
+    const { password: _, ...userWithoutPassword } = user.toObject();
+    res.status(200).json(userWithoutPassword);
   } catch (err) {
     res.status(500).json({ error: "Signin failed", details: err.message });
   }
